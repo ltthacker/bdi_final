@@ -1,0 +1,6 @@
+# Add path for pyspark
+export SPARK_HOME=$HOME/Documents/course/big_data_integration/software/spark-3.0.0-preview2-bin-hadoop2.7
+export PATH=$PATH:$SPARK_HOME/bin
+export PYTHONPATH=$SPARK_HOME/python:$PYTHONPATH
+export PYSPARK_PYTHON=python3
+export SPARK_LOCAL_IP=127.0.1.1

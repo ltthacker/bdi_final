@@ -1,0 +1,5 @@
+port: 10001
+master: local[2]
+appname: fake_new_analyzer
+interval: 1
+loglevel: FATAL
