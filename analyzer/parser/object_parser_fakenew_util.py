@@ -25,15 +25,21 @@ ORIGIN = [r"(địa\s{1,2}chỉ|trú)\s{1,2}(tại|ở)\s{1,2}(\s|\w|,|TP.)*([A-
 r"(địa chỉ|trú|quê) (tại|ở)?(\s(phường|quận|thị xã|thị trấn|tỉnh|thành phố)?(\s?\w{1,4}){1,3})"]
 NUMBERSIT = ["số ghế [0-9]{1,8}[A-Z]{1,4}\s?"]
 flags=re.I|re.U  
-DEATH = [r"(đã)?\s{1,3}(chết|khuất|ngoẻo|tử vong|mất)",
-        r"(đã)\s{1,3}(khuất|mất)"
+NEGATIVE_COVID = [r"(đã)?\s{1,3}(khỏi bệnh)"
 ]
-def getDeath(text):
+    
+def getStatus(text):
+    for i in NEGATIVE_COVID:
+    #         print("Regex:", i)
+        result = re.search(i, text,flags)
+    if result:
+        return "negative"
     for i in DEATH:
 #         print("Regex:", i)
         result = re.search(i, text,flags)
     if result:
         return "death"
+    
     return None
 def getSex(text):
     for i in FEMALE:
@@ -212,7 +218,7 @@ def processCheck(text, date=None):
         if origin != None:
             IS_TRUE_NEW.append(matchInfoBN(BNid_main, "origin", origin))
 
-        status = getDeath(sentence)
+        status = getStatus(sentence)
         if status != None:
             IS_TRUE_NEW.append(matchInfoBN(BNid_main, "status", status))
 

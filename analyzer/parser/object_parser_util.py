@@ -25,16 +25,25 @@ NATIONLATY_RE = ["quốc tịch(.{0,1}[A-Z]\w{1,7}){1,3}",
 ORIGIN = [r"(địa\s{1,2}chỉ|trú)\s{1,2}(tại|ở)\s{1,2}(\s|\w|,|TP.)*([A-Z]\w{1,})",
 r"(địa chỉ|trú|quê) (tại|ở)?(\s(phường|quận|thị xã|thị trấn|tỉnh|thành phố)?(\s?\w{1,4}){1,3})"]
 NUMBERSIT = ["số ghế [0-9]{1,8}[A-Z]{1,4}\s?"]
+flags=re.I|re.U
 DEATH = [r"(đã)?\s{1,3}(chết|khuất|ngoẻo|tử vong|mất)",
         r"(đã)\s{1,3}(khuất|mất)"
 ]
-flags=re.I|re.U    
-def getDeath(text):
+NEGATIVE_COVID = [r"(đã)?\s{1,3}(khỏi bệnh)"
+]
+    
+def getStatus(text):
+    for i in NEGATIVE_COVID:
+    #         print("Regex:", i)
+        result = re.search(i, text,flags)
+    if result:
+        return "negative"
     for i in DEATH:
 #         print("Regex:", i)
         result = re.search(i, text,flags)
     if result:
         return "death"
+    
     return None
 def getSex(text):
     for i in FEMALE:
@@ -208,7 +217,7 @@ def process(text, date=None):
         if origin != None:
             neo4j.updateBN(BNid_main, "origin", origin)
             print("Origin:",origin)
-        status = getDeath(sentence)
+        status = getStatus(sentence)
         if status != None:
             neo4j.updateBN(BNid_main, "status", status)
             print("Status:",status)
@@ -219,16 +228,16 @@ def getObject(text, date=None):
         process(text, date)
     except Exception as e:
         print("Error: ",e)
-# text = """THÔNG BÁO 7 CA BỆNH MỚI SỐ 107-113: BN107: nữ, 25 tuổi,đã chết, quốc tịch Việt Nam, nhân viên thiết kế đồ họa, là con gái và sống cùng BN86. 
-# Có địa chỉ thường trú tại Thanh Xuân, Hà Nội; BN108: nam, 19 tuổi, quốc tịch Việt Nam, địa chỉ ở Cầu Giấy, Hà Nội. 
-#     Bệnh nhân là du học sinh Việt Nam tại Anh về nước ngày 18/3 trên chuyến bay VN054; BN109: nam, 42 tuổi, quốc tịch Việt Nam, địa chỉ ở Hoàng Mai, Hà Nội. 
-#         Bệnh nhân là giảng viên một trường đại học của Anh, về nước ngày 15/3/2020 trên chuyến bay TG 560, số ghế 37E; BN110: nữ, 19 tuổi, quốc tịch Việt Nam, địa chỉ ở Đống Đa, Hà Nội. 
-#             Bệnh nhân là du học sinh tại Mỹ, hy sinh tạitại Việt Nam ngày 19/03/2020 trên chuyến bay JL751, số ghế 1A; BN111: nữ, 25 tuổi, quốc tịch Việt Nam, địa chỉ ở Hải Hậu, Nam Định. 
-#                 Bệnh nhân là du học sinh tại Pháp, về Việt Nam ngày 18/03/2020 trên chuyến bay VN018, số ghế 36D; BN112: nữ, 30 tuổi, quốc tịch Việt Nam, địa chỉ ở Hoàn Kiếm, Hà Nội. 
-# Bệnh nhân là du học sinh tại Pháp đã khuất. Ngày 17/3/2020 về Việt Nam trên chuyến bay VN018;
-# BN113: nữ, 18 tuổi, tử vong,quốc tịch Việt Nam, địa chỉ ở Hoàn Kiếm, Hà Nội. Bệnh nhân đã ngoẻo là du học sinh người Anh về nước trên chuyến bay VN054 (số ghế 2A) ngày 18/03/2020.
-#     Hiện tại tất cả các bệnh nhân đang được cách ly và điều trị tại Bệnh viện Bệnh nhiệt đới Trung ương cơ sở Đông Anh."""
-# getObject(text, "21/3")
+text = """THÔNG BÁO 7 CA BỆNH MỚI SỐ 107-113: BN107: nữ, 25 tuổi,đã chết, quốc tịch Việt Nam, nhân viên thiết kế đồ họa, là con gái và sống cùng BN86. 
+Có địa chỉ thường trú tại Thanh Xuân, Hà Nội; BN108: nam, 19 tuổi, quốc tịch Việt Nam, địa chỉ ở Cầu Giấy, Hà Nội. 
+    Bệnh nhân là du học sinh Việt Nam tại Anh về nước ngày 18/3 trên chuyến bay VN054; BN109: nam, 42 tuổi, quốc tịch Việt Nam, địa chỉ ở Hoàng Mai, Hà Nội. 
+        Bệnh nhân là giảng viên một trường đại học của Anh, về nước ngày 15/3/2020 trên chuyến bay TG 560, số ghế 37E; BN110: nữ, 19 tuổi, quốc tịch Việt Nam, địa chỉ ở Đống Đa, Hà Nội. 
+            Bệnh nhân là du học sinh tại Mỹ, hy sinh tạitại Việt Nam ngày 19/03/2020 trên chuyến bay JL751, số ghế 1A; BN111: nữ, 25 tuổi, quốc tịch Việt Nam, địa chỉ ở Hải Hậu, Nam Định. 
+                Bệnh nhân là du học sinh tại Pháp, về Việt Nam ngày 18/03/2020 trên chuyến bay VN018, số ghế 36D; BN112: nữ, 30 tuổi, quốc tịch Việt Nam, địa chỉ ở Hoàn Kiếm, Hà Nội. 
+Bệnh nhân là du học sinh tại Pháp đã khuất. Ngày 17/3/2020 về Việt Nam trên chuyến bay VN018;
+BN113: nữ, 18 tuổi, đã khỏi bệnh ,quốc tịch Việt Nam, địa chỉ ở Hoàn Kiếm, Hà Nội. Bệnh nhân đã ngoẻo là du học sinh người Anh về nước trên chuyến bay VN054 (số ghế 2A) ngày 18/03/2020.
+    Hiện tại tất cả các bệnh nhân đang được cách ly và điều trị tại Bệnh viện Bệnh nhiệt đới Trung ương cơ sở Đông Anh."""
+getObject(text, "21/3")
 
 
 
