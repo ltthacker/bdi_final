@@ -24,7 +24,7 @@ class Browser:
 def source1(browser):
     base_url = 'https://ncov.moh.gov.vn/web/guest/dong-thoi-gian?p_p_id=101_INSTANCE_iEPhEhL1XSde&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&p_p_col_id=_118_INSTANCE_IrnCPpeHzQ4m__column-1&p_p_col_count=1&_101_INSTANCE_iEPhEhL1XSde_delta=30&_101_INSTANCE_iEPhEhL1XSde_keywords=&_101_INSTANCE_iEPhEhL1XSde_advancedSearch=false&_101_INSTANCE_iEPhEhL1XSde_andOperator=true&p_r_p_564233524_resetCur=false&_101_INSTANCE_iEPhEhL1XSde_cur='
 
-    for page_id in range(1, 11):
+    for page_id in range(10, 0, -1):
         # go to official ncov moh gov vn timeline
         url = '{}{}'.format(base_url, page_id)
 
@@ -35,7 +35,9 @@ def source1(browser):
         soup = BeautifulSoup(response, 'html.parser')
 
         # extract time and news
-        for detail in soup.find_all('div', {'class': 'timeline-detail'}):
+        details = soup.find_all('div', {'class': 'timeline-detail'})
+        for i in range(len(details) - 1, -1, -1): # parse in reverse
+            detail = details[i]
             head    = detail.find('h3')
             content = detail.find('p')
             new = {'timestamp': head.text, 'title': '', 'content': content.text}

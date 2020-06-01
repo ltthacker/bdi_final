@@ -7,7 +7,7 @@
 # from py2neo import Database
 from py2neo import Graph, Node, Relationship
 urldb = "http://localhost:7474/"
-graph = Graph(urldb,auth=("neo4j", "khanh"))
+graph = Graph(urldb,auth=("neo4j", "zQekf3CUqtFZSVS"))
 # graph = Graph(password="khanh")
 
 
@@ -38,6 +38,7 @@ def updateBN(BNid, type, value):
         graph.run(command)
     except Exception as e:
         print(e)
+
 # createBN(1,"Khanh", 25, "HN", "", "", "alive", "male", "VN")
 
 

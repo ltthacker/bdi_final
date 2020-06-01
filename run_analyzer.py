@@ -18,6 +18,7 @@ def main():
         item['true'] = result == analyzer.TRUE
         return item
     checked_items = items.map(analyzer_check)
+#    checked_items.pprint()
 
     # filter item with not given false, which is relevant
     # or in our knowledge domain
