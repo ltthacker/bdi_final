@@ -7,15 +7,15 @@
 # from py2neo import Database
 from py2neo import Graph, Node, Relationship
 urldb = "http://localhost:7474/"
-graph = Graph(urldb,auth=("neo4j", "zQekf3CUqtFZSVS"))
+# graph = Graph(urldb,auth=("neo4j", "zQekf3CUqtFZSVS"))
 # graph = Graph(password="khanh")
-
+graph = Graph(urldb,auth=("neo4j", "khanh"))
 
 # In[10]:
 
 
 def createBN(idBN, name=None, age=None, origin=None, date_positive=None, 
-            last_update=None, status=None,
+            last_update=None, status="alive",
             sex=None, country=None):
     BN = Node("BN", id=str(idBN), name=name, age=age, 
             origin=origin, date_positive=date_positive, 

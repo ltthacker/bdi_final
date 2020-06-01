@@ -24,7 +24,17 @@ NATIONLATY_RE = ["quốc tịch(.{0,1}[A-Z]\w{1,7}){1,3}",
 ORIGIN = [r"(địa\s{1,2}chỉ|trú)\s{1,2}(tại|ở)\s{1,2}(\s|\w|,|TP.)*([A-Z]\w{1,})",
 r"(địa chỉ|trú|quê) (tại|ở)?(\s(phường|quận|thị xã|thị trấn|tỉnh|thành phố)?(\s?\w{1,4}){1,3})"]
 NUMBERSIT = ["số ghế [0-9]{1,8}[A-Z]{1,4}\s?"]
-flags=re.I|re.U    
+flags=re.I|re.U  
+DEATH = [r"(đã)?\s{1,3}(chết|khuất|ngoẻo|tử vong|mất)",
+        r"(đã)\s{1,3}(khuất|mất)"
+]
+def getDeath(text):
+    for i in DEATH:
+#         print("Regex:", i)
+        result = re.search(i, text,flags)
+    if result:
+        return "death"
+    return None
 def getSex(text):
     for i in FEMALE:
 #         print("Regex:", i)
@@ -201,6 +211,11 @@ def processCheck(text, date=None):
         origin = getOrigin(sentence)
         if origin != None:
             IS_TRUE_NEW.append(matchInfoBN(BNid_main, "origin", origin))
+
+        status = getDeath(sentence)
+        if status != None:
+            IS_TRUE_NEW.append(matchInfoBN(BNid_main, "status", status))
+
     return IS_TRUE_NEW
 def checkObject(text, date=None):
     IS_TRUE_NEW = []
