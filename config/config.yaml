@@ -1,5 +1,17 @@
-port: 10004
+# Configure TCP socket
+port: 10000
+
+# Configure Spark
 master: local[2]
 appname: fake_new_analyzer
-interval: 1
 loglevel: FATAL
+
+# Configure SparkStreaming
+interval: 1
+
+# Configure SparkSQL
+host: localhost
+database: fakenew
+user: thanh
+password: BaRnEy0s@
+

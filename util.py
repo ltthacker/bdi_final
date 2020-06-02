@@ -4,6 +4,7 @@ import socket
 from io import StringIO
 from pyspark import SparkContext
 from pyspark.streaming import StreamingContext
+from pyspark.sql import SQLContext
 
 def load_config():
     config = yaml.load(open('config/config.yaml').read(), Loader=yaml.FullLoader)
@@ -32,7 +33,8 @@ def get_spark_streaming_context():
     sc = SparkContext(master, appname)
     sc.setLogLevel(config['loglevel'])
     ssc = StreamingContext(sc, interval)
-    return ssc
+    sqlc = SQLContext(sc)
+    return sc, ssc, sqlc
 
 def json2bin(data):
     data = json.dumps(data)

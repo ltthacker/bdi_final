@@ -15,8 +15,11 @@ class Browser:
 
     def get(self, url):
         driver = self.driver
-        driver.get(url)
-        html = driver.page_source
+        try:
+            driver.get(url)
+            html = driver.page_source
+        except selenium.common.exceptions.WebDriverException:
+            html = ''
         return html
 
     def __del__(self):
@@ -84,3 +87,13 @@ def html2paragraphs(html):
         p = p.strip()
         if heuristic_is_sentence(p):
             yield p
+
+def html2text(html):
+    soup = BeautifulSoup(html, 'html.parser')
+    ps = soup.findAll(text=True)
+    result = []
+    for p in filter(tag_visible, ps):
+        p = p.strip()
+        if heuristic_is_sentence(p):
+            result.append(p)
+    return '. '.join(result)

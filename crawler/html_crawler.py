@@ -15,7 +15,6 @@ class HTMLCrawler:
             is sentences but that will not work, cannot parse the semantic)
         '''
         html = self.browser.get(url)
-        for paragraph in util.html2paragraphs(html):
-            item = {'url': url,
-                    'paragraph': paragraph}
+        for p in util.html2paragraphs(html):
+            item = {'url': url, 'paragraph': p}
             yield item
