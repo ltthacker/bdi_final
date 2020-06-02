@@ -25,9 +25,11 @@ ORIGIN = [r"(địa\s{1,2}chỉ|trú)\s{1,2}(tại|ở)\s{1,2}(\s|\w|,|TP.)*([A-
 r"(địa chỉ|trú|quê) (tại|ở)?(\s(phường|quận|thị xã|thị trấn|tỉnh|thành phố)?(\s?\w{1,4}){1,3})"]
 NUMBERSIT = ["số ghế [0-9]{1,8}[A-Z]{1,4}\s?"]
 flags=re.I|re.U  
-NEGATIVE_COVID = [r"(đã)?\s{1,3}(khỏi bệnh)"
+DEATH = [r"(đã)?\s{1,3}(chết|khuất|ngoẻo|tử vong|mất)",
+        r"(đã)\s{1,3}(khuất|mất)"
 ]
-    
+NEGATIVE_COVID = [r"(đã)?\s{1,3}(khỏi bệnh)"
+]   
 def getStatus(text):
     for i in NEGATIVE_COVID:
     #         print("Regex:", i)
