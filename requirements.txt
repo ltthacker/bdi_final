@@ -1,0 +1,6 @@
+selenium
+BeautifulSoup4
+pyyaml
+py2neo
+underthesea
+pymysql
