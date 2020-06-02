@@ -84,7 +84,7 @@ class URLCrawlerNcov:
             # shuffle the queue to get more diverse content
             # since the first 500 x number of start page all from 
             # baomoi.com front page
-            # random.shuffle(self.queue)
+            random.shuffle(self.queue)
 
             # pop the news
             url = self.queue.pop(0)

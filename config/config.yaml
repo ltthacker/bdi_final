@@ -1,4 +1,4 @@
-port: 10002
+port: 10004
 master: local[2]
 appname: fake_new_analyzer
 interval: 1

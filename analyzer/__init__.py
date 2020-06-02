@@ -15,3 +15,6 @@ def check(sentence):
         else:
             return FALSE
 
+def check_verbose(sentence):
+    flag = parser.object_parser.fakenew(sentence)
+    return flag

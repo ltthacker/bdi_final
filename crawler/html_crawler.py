@@ -11,10 +11,11 @@ class HTMLCrawler:
         Input:
             - url (str): url that needed to be crawled
         Output:
-            - item (dict): contain pair of url and sentence
+            - item (dict): contain pair of url and paragraph (previously
+            is sentences but that will not work, cannot parse the semantic)
         '''
         html = self.browser.get(url)
-        for sentence in util.html2sentences(html):
+        for paragraph in util.html2paragraphs(html):
             item = {'url': url,
-                    'sentence': sentence}
+                    'paragraph': paragraph}
             yield item

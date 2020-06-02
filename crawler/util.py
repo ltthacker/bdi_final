@@ -77,3 +77,10 @@ def html2sentences(html):
             if heuristic_is_sentence(sentence):
                 yield sentence
 
+def html2paragraphs(html):
+    soup = BeautifulSoup(html, 'html.parser')
+    ps = soup.findAll(text=True)
+    for p in filter(tag_visible, ps):
+        p = p.strip()
+        if heuristic_is_sentence(p):
+            yield p

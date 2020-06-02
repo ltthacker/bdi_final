@@ -27,7 +27,7 @@ NUMBERSIT = ["số ghế [0-9]{1,8}[A-Z]{1,4}\s?"]
 flags=re.I|re.U    
 def getSex(text):
     for i in FEMALE:
-#         print("Regex:", i)
+#         # print("Regex:", i)
         result = re.search(i, text)
         if result:
             return "female"
@@ -79,11 +79,11 @@ def preprocessIDBN(text):
         result = re.search(i, text)
         
         if result:
-            print(result.group(0))
+#            print(result.group(0))
             text_include = re.findall(i, text,flags)
-            for bn in text_include:
-                print(bn)
-                print(str(re.findall(r"[0-9]{1,3}", bn,flags)))
+#            for bn in text_include:
+#                print(bn)
+#                print(str(re.findall(r"[0-9]{1,3}", bn,flags)))
                 # text = text.replace(bn,"BN"+str(re.findall(r"[0-9]{1,3}", bn)[0]))
 
 #     BNs = set(BNs)
@@ -99,7 +99,8 @@ def matchInfoBN(BNid, type, value_needcheck):
     try:
         return (match_new(neo4j.getInfoBN(BNid, type), value_needcheck))
     except Exception as e:
-        print("match error:",e, BNid, type, value_needcheck)
+        # print("match error:",e, BNid, type, value_needcheck)
+        pass
 def seperateSentences(text):
     sentences = []
     for sentence in text.split('.'):
@@ -126,7 +127,7 @@ def checkRelation(text):
                     continue
                 else:
                     sub = text[text.rfind(BNid1)+len(BNid1):text.find(BNid2)]
-                    print(sub)
+#                    print(sub)
                     if "," in sub:
                         BNid1 = BNid_main
                     else:
@@ -136,7 +137,7 @@ def checkRelation(text):
                         relation = sub[sub.rfind("(")+1:]
                     if relation == None:
                         relation = sub
-                    print("Relation:",BNid1, relation, BNid2)
+#                    print("Relation:",BNid1, relation, BNid2)
                     NEW_FLAG.append(match_new(neo4j.getRelationBN(BNid1, BNid2), relation))
                     # neo4j.createConnect(BNid1, relation, BNid2)
     return NEW_FLAG
@@ -173,12 +174,12 @@ def processCheck(text, date=None):
     BNid_main = None
     # print(1)
     for sentence in seperateSentences(text):
-        print("#"*32)
-        print("Sentences:",sentence)
+#        print("#"*32)
+#        print("Sentences:",sentence)
         BNids = getBNid(sentence)
         if len(BNids) != 0:
             BNid_main = BNids[0]
-        print(BNid_main)
+#        print(BNid_main)
         if date:
             IS_TRUE_NEW.append(matchInfoBN(BNid_main, "date", date))
         sex = getSex(sentence)
@@ -207,10 +208,10 @@ def checkObject(text, date=None):
     text = preprocessIDBN(text)
     IS_TRUE_NEW += checkRelation(text)
     IS_TRUE_NEW += processCheck(text, date)
-    print(json.dumps(IS_TRUE_NEW, indent=4))
+    # print(json.dumps(IS_TRUE_NEW, indent=4))
     flag = True
     for i in IS_TRUE_NEW:
         flag = flag * i[0]
-        print(i)
+        # print(i)
     return flag
 
